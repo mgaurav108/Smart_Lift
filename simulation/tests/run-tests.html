@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Lift - Acceptance Test Runner</title>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #eef2f7; margin: 0; padding: 24px; }
+    main { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+    h1 { margin: 0 0 4px; font-size: 20px; }
+    .sub { color: #6b7280; font-size: 13px; margin-bottom: 16px; }
+    .summary { font-weight: 700; padding: 10px 12px; border-radius: 8px; margin-bottom: 16px; }
+    .summary.pass-only { background: #dcfce7; color: #166534; }
+    .summary.has-fail { background: #fee2e2; color: #991b1b; }
+    .result { font-family: Consolas, monospace; font-size: 13px; padding: 4px 0; border-bottom: 1px dashed #f1f5f9; }
+    .result.pass { color: #166534; }
+    .result.fail { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Smart Lift &ndash; Acceptance Tests (Phase 2 &mdash; Multi-passenger)</h1>
+    <p class="sub">Spec source: <code>Spec/phase1-simulation.md</code> &amp; Phase 2 block &mdash; run these after any engine change.</p>
+    <div id="summary" class="summary">Running&hellip;</div>
+    <div id="results"></div>
+  </main>
+
+  <script src="../js/engine.js"></script>
+  <script src="tests.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      var res = TestSuite.run();
+      var summaryEl = document.getElementById('summary');
+      var resultsEl = document.getElementById('results');
+
+      summaryEl.className = 'summary ' + (res.fail === 0 ? 'pass-only' : 'has-fail');
+      summaryEl.textContent = res.fail === 0
+        ? 'All ' + res.pass + ' tests PASSED \u2713'
+        : res.pass + ' passed, ' + res.fail + ' FAILED';
+
+      res.output.forEach(function (line) {
+        var div = document.createElement('div');
+        div.className = 'result ' + (line.indexOf('PASS') === 0 ? 'pass' : 'fail');
+        div.textContent = line;
+        resultsEl.appendChild(div);
+      });
+    })();
+  </script>
+</body>
+</html>

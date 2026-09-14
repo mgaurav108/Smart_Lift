@@ -1,0 +1,255 @@
+:root {
+  --floor-h: 80px;
+  --panel-bg: #ffffff;
+  --border: #d7dee8;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-b: #16a34a;
+  --bg: #eef2f7;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-header {
+  text-align: center;
+  padding: 18px 16px 6px;
+}
+
+.app-header h1 { margin: 0; font-size: 24px; }
+.app-header .subtitle { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+.app {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 16px 16px 8px;
+}
+
+/* ---------- Building scene ---------- */
+.building-panel {
+  flex: 1;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.scene { display: flex; }
+
+.floor-numbers {
+  width: 46px;
+  flex: none;
+  border-right: 1px solid var(--border);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #f1f5f9 0,
+    #f1f5f9 calc(var(--floor-h) - 1px),
+    #ffffff calc(var(--floor-h) - 1px),
+    #ffffff var(--floor-h)
+  );
+}
+
+.floor-number {
+  height: var(--floor-h);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--muted);
+  border-bottom: 1px solid #e5e7eb;
+}
+.floor-number:last-child { border-bottom: none; }
+
+.building {
+  position: relative;
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    #eef2f7 0,
+    #eef2f7 calc(var(--floor-h) - 1px),
+    #f9fafb calc(var(--floor-h) - 1px),
+    #f9fafb var(--floor-h)
+  );
+}
+
+.shaft {
+  position: relative;
+  flex: 1;
+  height: calc(var(--floor-h) * 6);
+  background: #fff;
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.shaft::after { /* subtle guide rails */
+  content: '';
+  position: absolute;
+  left: 6px; right: 6px; top: 0; bottom: 0;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+}
+
+.lift {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  height: calc(var(--floor-h) - 6px);
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  z-index: 1;
+}
+
+.lift-label {
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.lift-name { font-size: 12px; letter-spacing: 0.5px; }
+.lift-floor { font-size: 16px; }
+
+/* ---------- Event log ---------- */
+.behaviour-log { border-top: 1px solid var(--border); padding: 10px 14px; }
+.behaviour-log h3 { margin: 0 0 6px; font-size: 14px; color: var(--muted); }
+.log-list {
+  max-height: 120px;
+  overflow-y: auto;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 12px;
+}
+.log-line { padding: 2px 0; border-bottom: 1px dashed #f1f5f9; }
+.log-line:last-child { border-bottom: none; }
+.log-started { color: var(--accent); }
+.log-arrived { color: var(--accent-b); }
+.log-served { color: #6d28d9; }
+
+/* ---------- Control panel ---------- */
+.control-panel {
+  width: 260px;
+  flex: none;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.control-panel h2 { margin: 0; font-size: 18px; }
+.control-panel h3 { margin: 14px 0 6px; font-size: 14px; color: var(--muted); }
+.hint { margin: 4px 0 12px; color: var(--muted); font-size: 13px; }
+
+.user-state {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.floor-buttons {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
+.floor-btn {
+  height: 46px;
+  border: none;
+  border-radius: 8px;
+  background: #e5eaf1;
+  font-size: 16px;
+  font-weight: 700;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.floor-btn:hover { background: var(--accent); color: #fff; }
+.floor-btn:focus-visible { outline: 3px solid #93c5fd; }
+
+.call-btn { background: #dbeafe; }
+.call-btn:hover { background: #2563eb; color: #fff; }
+
+.destination-btn { background: #fef3c7; }
+.destination-btn:hover { background: #d97706; color: #fff; }
+
+.board-btn {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 10px 0;
+  transition: background 0.15s ease;
+}
+.board-btn:hover { background: #15803d; }
+
+.message { min-height: 38px; margin: 12px 0 0; padding: 8px 10px; border-radius: 6px; font-size: 13px; }
+.message.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.message.info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+
+.lift-status { font-size: 13px; }
+.status-line { padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+.status-line:last-child { border-bottom: none; }
+.status-line .dot {
+  display: inline-block;
+  width: 10px; height: 10px; border-radius: 50%;
+  margin-right: 6px;
+}
+
+.log-unboarded { color: #059669; }
+
+/* ---------- Maintenance ---------- */
+.lift.servicing {
+  filter: grayscale(1);
+  opacity: 0.55;
+  border: 2px dashed #94a3b8;
+}
+.status-line.servicing { opacity: 0.7; color: var(--muted); }
+.status-line.servicing .dot { background-color: #94a3b8 !important; }
+.maint-btn {
+  float: right;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+.maint-btn:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
+
+.app-footer {
+  text-align: center;
+  padding: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.app-footer code { background: #e5eaf1; padding: 1px 5px; border-radius: 4px; }

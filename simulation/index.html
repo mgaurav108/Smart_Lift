@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Lift Simulation</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Smart Lift Simulation</h1>
+    <p class="subtitle">Real-time simulation &middot; call a lift at any floor &mdash; it travels to you, board, choose destination</p>
+  </header>
+
+  <main class="app">
+    <section class="building-panel">
+      <div class="scene">
+        <div id="floor-numbers" class="floor-numbers" aria-hidden="true"></div>
+        <div id="building" class="building"></div>
+      </div>
+
+      <div class="behaviour-log">
+        <h3>Engine Events</h3>
+        <div id="log-list" class="log-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside class="control-panel">
+      <h2>Control Panel</h2>
+      <div id="user-state" class="user-state"></div>
+      <div id="floor-buttons" class="floor-buttons"></div>
+      <p id="message" class="message" role="status"></p>
+
+      <h3>Lift Status</h3>
+      <div id="lift-status" class="lift-status"></div>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    <p>Built with spec-driven development &mdash; see <code>Spec/phase1-simulation.md</code>.</p>
+  </footer>
+
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
