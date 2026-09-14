@@ -330,7 +330,39 @@ Status: COMPLETE
 
 ---
 
+## Phase 3b: Repo housekeeping (git/GitHub)
+
+Status: COMPLETE
+
+### Step 3b.1 - Initial commit + push
+- [x] This log moved from the repo root into `Spec/Steps_Followed.md`.
+- [x] Initial commit `18ed80d` (16 files, Phases 0-3a).
+- [x] Pushed to **origin** = `https://github.com/mgaurav108/Smart_Lift.git`.
+- [x] Verified: all engine acceptance tests pass (32/32) before committing.
+
+### Step 3b.2 - Remove IntelliJ noise
+- [x] `src/Main.java` (unused IDE starter file) deleted.
+- [x] `.idea/` and `Smart_Lift.iml` removed from tracking and added to
+  `.gitignore` (kept locally so IntelliJ still works).
+
+### Step 3b.3 - Baseline tag
+- [x] Created annotated tag **`phase_1`** at HEAD (pre-DCS baseline) and
+  pushed it. `git checkout phase_1` restores this exact state.
+
+### Verification
+- [x] `git status` clean; `origin/master` up to date.
+- [x] 13 tracked files in the repo.
+
+### Files changed in Phase 3b
+- Modified: `.gitignore`, `Spec/Steps_Followed.md`.
+- Deleted from repo: `src/Main.java`, `.idea/*`, `Smart_Lift.iml`.
+
+---
+
 ## Next steps (ideas, not yet scheduled)
+- **Phase DCS-1**: Destination Control System - lobby destination entry
+  before boarding, group-computed car assignment ("Take Lift C"), grouped
+  car stops, boarding restricted to the assigned car.
 - Phase 2: multi-destination runs + pickup along the way; doors; direction indicators.
 - Phase 3: user authentication (story 1).
 - Phase 4: emergency stop + alerts (story 4).
