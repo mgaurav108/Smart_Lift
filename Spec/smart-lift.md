@@ -37,6 +37,16 @@ experience for passengers.
 * The system should continuously monitor the lift's status and alert users and nearby personnel in case of a fault.
 * The system should also provide a history of faults and maintenance records for easy access.
 
+### User Story 6: Destination Dispatch (DCS)
+
+* As a user, I want to enter my destination at a lobby kiosk *before* boarding so that the system can assign me a specific car and group passengers.
+* Given a valid destination selection, the system should display my assigned car ("Take Lift C"), its pickup ETA, and its planned stops.
+* Given the assigned car arriving with its doors open, I should be able to board it; boarding any other car must be rejected.
+* The system should batch passengers with compatible trips (same direction, nearby destinations) into the same car to reduce stops and travel time.
+* The system should handle passengers who do not board their assigned car (no-show) by releasing the seat and allowing re-registration.
+
+> Implemented in `Spec/phase2-dcs.md` and `simulation/dcs/` (Phase 2).
+
 ## Technical Requirements
 
 * The system should be designed to be scalable and modular, with separate components for the control panel, mobile app, and lift hardware.

@@ -359,10 +359,75 @@ Status: COMPLETE
 
 ---
 
+## Phase 2 (DCS): Destination Control System
+
+Status: COMPLETE (engine + tests + UI)
+
+> Baseline = Phase 1 (tag `phase_1`). DCS keeps the 6-floor / 4-lift model
+> but moves destination entry BEFORE boarding and adds a group controller.
+
+### Planned steps
+1. Write `Spec/phase2-dcs.md` - DCS concept, FRs, AC-D1..AC-D10.
+2. Scaffold `simulation/dcs/` (engine, UI, tests, runner).
+3. Implement DCS engine: kiosk `registerDestination`, grouping allocator,
+   ordered stops per lift, doors/no-show, capacity, maintenance.
+4. Write acceptance tests (AC-D1..D10).
+5. Build the kiosk UI (ticket "Take Lift C", boarding, grouped stops).
+6. Verify - Node tests + syntax check.
+7. Update docs (`smart-lift.md` story 6, phase1 baseline note, this log).
+
+### Step 2.1 - Spec (`Spec/phase2-dcs.md`)
+- Documented DCS vs Phase 1 (destination first, assigned car, grouping).
+- Passenger lifecycle: unassigned -> assigned -> aboard -> done / no-show.
+- Grouping allocator ranked by: extra direction reversals, added travel
+  time, extra stops, total stops, id. Prevents a car zigzagging across
+  town and splits opposite-direction traffic onto different cars.
+- Acceptance criteria AC-D1..AC-D10 (incl. capacity + maintenance).
+
+### Step 2.2 - Scaffold + engine (`simulation/dcs/js/engine.js`)
+- New pure engine `SmartLift.DCS` (no DOM; Node + browser).
+- `registerDestination(building, passengerId, destFloor)` -> assigned lift,
+  pickup ETA, planned stops.
+- `board()` restricted to the assigned lift while doors are open.
+- Lifts carry an ordered `stops` plan; doors open `doorTicks` on each stop;
+  unboarding auto at destination; no-shows unassigned on doors close.
+- Capacity-limited; maintenance excludes a lift from assignment/boarding.
+
+### Step 2.3 - Tests (`simulation/dcs/tests/tests.js`)
+- 11 tests mapping to AC-D1..D10 (plus a grouped multi-stop journey).
+- Design decisions found while testing:
+  - "Reversal penalty" kept trips efficient (opposite trips split cars).
+  - All-maintenance case moved to a fresh building: a lift with planned
+    stops correctly refuses to enter maintenance.
+  - Consecutive same-floor pickups collapse to ONE stop (`[1,1,4,5]` -> `[1,4,5]`).
+
+### Step 2.4 - UI (`simulation/dcs/index.html`, `js/ui.js`, `css/style.css`)
+- DCS kiosk panel: destination buttons BEFORE boarding -> live ticket
+  (assigned car, pickup ETA, car stops); Board button appears when the
+  assigned car's doors open.
+- Multiple passengers: add passengers, switch who you control - grouping
+  across cars is visible; lift labels show stops; doors show open state.
+- Park positions [A:1, B:2, C:5, D:6] (same as Phase 1).
+
+### Verification
+- [x] DCS acceptance tests pass (11/11) via Node.
+- [x] `node --check` passes on engine.js / ui.js / tests.js.
+- [x] Phase 1 tests still green (32/32) - baseline untouched.
+- [x] Simulation viewable by opening `simulation/dcs/index.html`.
+
+### Files changed in Phase 2
+- Created: `Spec/phase2-dcs.md`, `simulation/dcs/index.html`,
+  `simulation/dcs/css/style.css`, `simulation/dcs/js/engine.js`,
+  `simulation/dcs/js/ui.js`, `simulation/dcs/tests/tests.js`,
+  `simulation/dcs/tests/run-tests.html`.
+- Modified: `Spec/smart-lift.md` (User Story 6), `Spec/phase1-simulation.md`
+  (baseline note), `Spec/Steps_Followed.md`.
+
+---
+
 ## Next steps (ideas, not yet scheduled)
-- **Phase DCS-1**: Destination Control System - lobby destination entry
-  before boarding, group-computed car assignment ("Take Lift C"), grouped
-  car stops, boarding restricted to the assigned car.
+- DCS-2: predicted wait/ride times display; reassignment while waiting.
+- DCS-3: real traffic profiling / peak patterns; door + acceleration curves.
 - Phase 2: multi-destination runs + pickup along the way; doors; direction indicators.
 - Phase 3: user authentication (story 1).
 - Phase 4: emergency stop + alerts (story 4).

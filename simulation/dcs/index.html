@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Lift - Destination Control System (DCS)</title>
+  <link rel="stylesheet" href="css/style.css?v=4">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Smart Lift &middot; DCS Simulation</h1>
+    <p class="subtitle">Destination Control System &mdash; pick your destination at the kiosk, the group
+      controller assigns you a car &quot;Take Lift C&quot; and batches compatible trips into one car</p>
+  </header>
+
+  <main class="app">
+    <section class="building-panel">
+      <div class="scene">
+        <div id="floor-numbers" class="floor-numbers" aria-hidden="true"></div>
+        <div id="passengers" class="passenger-column" aria-label="Passengers on each floor"></div>
+        <div id="building" class="building"></div>
+      </div>
+
+      <div class="behaviour-log">
+        <h3>Engine Events</h3>
+        <div id="log-list" class="log-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside class="control-panel">
+      <h2>DCS Kiosk</h2>
+      <p class="hint">1. Add passengers &middot; 2. Click a passenger chip to control them &middot; 3. Choose a destination at the kiosk</p>
+
+      <div class="passenger-bar">
+        <select id="passenger-select" aria-label="Controlled passenger"></select>
+        <button id="add-passenger" class="add-btn" type="button">+ Add passenger</button>
+        <button id="start-sim" class="add-btn" type="button">Start Simulation</button>
+      </div>
+      <div id="passenger-chips" class="passenger-chips" aria-label="Passenger list"></div>
+
+      <div id="kiosk-state" class="kiosk-state"></div>
+      <div id="kiosk" class="kiosk"></div>
+      <p id="message" class="message" role="status"></p>
+
+      <h3>Lift Status</h3>
+      <div id="lift-status" class="lift-status"></div>
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+    <p>Phase 2 (DCS) &mdash; see <code>Spec/phase2-dcs.md</code> &middot; built on the <code>phase_1</code> baseline.</p>
+  </footer>
+
+  <script src="js/engine.js?v=10"></script>
+  <script src="js/ui.js?v=9"></script>
+</body>
+</html>

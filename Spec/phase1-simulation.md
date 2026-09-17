@@ -2,6 +2,11 @@
 
 > Sub-spec derived from user stories 2 and 3 of `Spec/smart-lift.md`.
 > Implementation target: a self-contained HTML/CSS/JS simulation with **4 lifts**.
+>
+> **Status note:** this is the **Phase 1 baseline** (git tag `phase_1`).
+> Phase 2 replaces the in-car destination flow with Destination Control
+> System (DCS) - see `Spec/phase2-dcs.md` and `simulation/dcs/`. Phase 1
+> remains untouched as the reference baseline.
 
 ## 1. Goals
 
