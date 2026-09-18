@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Lift - New DCS (Destination Control System)</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Smart Lift <span>&middot; Destination Control</span></h1>
+    <p class="tagline">15 floors &middot; 6 elevators &middot; capacity 10 &middot; load-balanced destination dispatch</p>
+  </header>
+
+  <main class="layout">
+    <!-- Simulator: building + status -->
+    <section class="panel" aria-label="Simulator">
+      <div class="panel-head">
+        <h2>Building</h2>
+        <div class="controls sim-controls">
+          <button id="start-btn" type="button">Start</button>
+          <button id="pause-btn" type="button">Pause</button>
+          <button id="resume-btn" type="button">Resume</button>
+          <button id="step-btn" type="button">Step</button>
+          <button id="reset-btn" type="button">Reset</button>
+          <label>Speed
+            <select id="speed-select">
+              <option value="1">1x</option>
+              <option value="2">2x</option>
+              <option value="5">5x</option>
+              <option value="10">10x</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="scene">
+        <div id="floor-numbers" class="floor-numbers" aria-label="Floor numbers"></div>
+        <div id="building" class="building" aria-label="Elevator shafts"></div>
+      </div>
+
+      <div class="status-panel">
+        <h3>Elevator Status</h3>
+        <div id="status-list" class="status-list"></div>
+      </div>
+    </section>
+
+    <!-- Kiosk (destinations requested here) -->
+    <aside class="panel side" aria-label="Destination kiosk">
+      <h2>Destination Kiosk</h2>
+      <div class="kiosk">
+        <p class="hint">You are at floor <strong id="kiosk-origin-label">F1</strong>. Tap the floor you want to go to.</p>
+        <label>Current floor
+          <select id="kiosk-origin"></select>
+        </label>
+        <div class="block-label">Destination floor
+          <div id="kiosk-dest-panel" class="floor-panel" aria-label="Destination floor panel"></div>
+        </div>
+      </div>
+
+      <div id="assignment" class="assignment" aria-live="polite"></div>
+      <div id="message" class="message"></div>
+
+      <h3>Queued / Pending</h3>
+      <div id="pending-list" class="pending-list"></div>
+    </aside>
+
+    <!-- Metrics -->
+    <section class="panel metrics-panel" aria-label="Metrics">
+      <div class="panel-head"><h2>Metrics</h2></div>
+      <div id="metrics" class="metrics"></div>
+    </section>
+  </main>
+
+  <section class="panel log-panel" aria-label="Event log">
+    <h2>Event Log</h2>
+    <ol id="log-list" class="log-list"></ol>
+  </section>
+
+  <footer class="app-footer">
+    <span>Phase 7 UI &middot; varied load-balanced dispatch &middot; weights: wait 10 / stops 8 / distance 2 / load 5 / direction 4 / occupancy 3 / imbalance 2</span>
+  </footer>
+
+  <!-- Core engine (dependency order) -->
+  <script src="config/default-config.js"></script>
+  <script src="domain/state.js"></script>
+  <script src="domain/floor.js"></script>
+  <script src="domain/request.js"></script>
+  <script src="domain/passenger.js"></script>
+  <script src="domain/elevator.js"></script>
+  <script src="simulation/clock.js"></script>
+  <script src="simulation/state.js"></script>
+  <script src="dispatch/eta.js"></script>
+  <script src="dispatch/grouping.js"></script>
+  <script src="dispatch/scorer.js"></script>
+  <script src="dispatch/strategy.js"></script>
+  <script src="dispatch/nearest.js"></script>
+  <script src="dispatch/engine.js"></script>
+  <script src="maintenance/manager.js"></script>
+  <script src="simulation/engine.js"></script>
+  <script src="metrics/collector.js"></script>
+  <!-- UI + boot -->
+  <script src="./js/ui.js"></script>
+  <script>
+    (function () {
+      var NDC = window.SmartLift && window.SmartLift.NewDCS;
+      if (!NDC || !NDC.Config || !NDC.UI) return;
+      /* Demo uses the load-balanced "varied" policy so consecutive taps are
+       * spread across different lifts instead of all going to one car. */
+      var cfg = NDC.Config.create({
+        dispatch: { selection: 'varied', variationSeed: 7 }
+      });
+      NDC.UI.create(cfg, { doc: document });
+    })();
+  </script>
+</body>
+</html>
